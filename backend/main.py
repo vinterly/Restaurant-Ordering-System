@@ -35,11 +35,7 @@ def get_order(id):
     if not order:
         return jsonify({"message": "Order not found."}), 404
 
-    data = request.json
-    order.items = data.get("items", order.items)
-    order.total = data.get("total", order.total)
-    order.status = data.get("status", order.status)
-    order.created_at = data.get("createdAt", order.created_at)
+    return jsonify(order.to_json())
 
 if __name__ == "__main__":
     with app.app_context():
