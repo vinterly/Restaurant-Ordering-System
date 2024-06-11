@@ -1,0 +1,30 @@
+.menu-items {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.menu-items h1 {
+    font-weight: 500;
+    color: #020202;
+}
+
+.menu-text {
+    max-width: 60%;
+    color: #020202;
+}
+
+.menu-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    margin-top: 30px;
+    gap: 30px;
+    row-gap: 30px;
+}
+
+@media (max-width: 1050px) {
+    .menu-text {
+        max-width: 100%;
+        font-size: 14px;
+    }
+}
