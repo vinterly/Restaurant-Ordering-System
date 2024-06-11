@@ -33,17 +33,11 @@ const StoreContextProvider = (props) => {
         return totalAmount;
     }
 
-    const fetchMenuItems = async () => {
-        const response = await axios.get(`${url}/menu`)
-        setMenuItems(response.data.data)
-    }
-
     useEffect(() => {
-        async function loadData() {
-            await fetchMenuItems()
-        }
-        loadData();
-    },[])
+        axios.get(`/menu`)
+            .then(response => setMenuItems(response.data))
+            .catch(error => console.error('Error:', error));
+    }, []);
 
     const contextValue = {
         menu_items,
@@ -54,7 +48,7 @@ const StoreContextProvider = (props) => {
         getTotalCartAmount
     }
     return (
-        <StoreContext.Provider value={contextValue}>
+        <StoreContext.Provider value={{contextValue, menu_items, addToCart, removeFromCart, getTotalCartAmount}}>
             {props.children}
         </StoreContext.Provider>
     )
