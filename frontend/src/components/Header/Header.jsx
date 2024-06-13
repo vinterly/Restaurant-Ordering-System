@@ -7,7 +7,7 @@ const Header = () => {
             <div className="header-contents">
                 <h2>Savour the flavours of the Nordic lands</h2>
                 <p>Indulge in authentic Nordic cuisine delivered straight to your doorstep. From traditional favourites to modern culinary delights, satisfy your cravings with our delectable menu.</p>
-                <button>Experience Nordic Delicacies</button>
+                <button onClick={() => window.location.href = "#menu-items"}>Experience Nordic Delicacies</button>
             </div>
         </div>
     )
