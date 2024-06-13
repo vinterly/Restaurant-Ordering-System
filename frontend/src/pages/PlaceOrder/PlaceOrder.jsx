@@ -5,16 +5,8 @@ import { StoreContext } from "../../context/StoreContext"
 
 const PlaceOrder = () => {
 
-    const {cartItems, menuItems, getTotalCartAmount} = useContext(StoreContext);
+    const {getHotDiscount, getTotalCartAmount, calculateAllItemsAreHot, getTotalCartAmountWithDiscount} = useContext(StoreContext);
 
-    const allItemsAreHot = Object.keys(cartItems).length > 0 && Object.keys(cartItems).every(itemId => {
-        const item = menuItems.find(menuItem => menuItem._id === itemId);
-        return item && item.hot;
-    });
-
-     const totalAmount = getTotalCartAmount();
-    const hotDiscount = allItemsAreHot ? totalAmount * 0.1 : 0;
-    const totalWithDiscount = totalAmount - hotDiscount;
 
     return (
         <form className="place-order">
@@ -42,14 +34,14 @@ const PlaceOrder = () => {
                     <div>
                         <div className="cart-total-details">
                             <p>Subtotal</p>
-                            <p>{totalAmount} kr</p>
+                            <p>{getTotalCartAmount()} kr</p>
                         </div>
-                        {allItemsAreHot && (
+                        {calculateAllItemsAreHot() && (
                             <div>
                                 <hr />
                                 <div className="cart-total-details">
                                     <p>🌶️ Discount</p>
-                                    <p>{parseFloat(hotDiscount).toFixed(2)} kr</p>
+                                    <p>-{parseFloat(getHotDiscount()).toFixed(2)} kr</p>
                                 </div>
                             </div>
                         )}
@@ -61,7 +53,7 @@ const PlaceOrder = () => {
                         <hr />
                         <div className="cart-total-details">
                             <b>Total</b>
-                            <b>{totalWithDiscount+99} kr</b>
+                            <b>{getTotalCartAmountWithDiscount()+99} kr</b>
                         </div>
                         <button className="place-order-btn">Place Order</button>
                     </div>

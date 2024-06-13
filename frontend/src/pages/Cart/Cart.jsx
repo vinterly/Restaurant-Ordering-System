@@ -5,19 +5,9 @@ import { useNavigate } from "react-router-dom"
 
 const Cart = () => {
 
-    const {cartItems, menuItems, removeFromCart, getTotalCartAmount} = useContext(StoreContext);
+    const {cartItems, menuItems, removeFromCart, calculateAllItemsAreHot, getTotalCartAmount, getHotDiscount, getTotalCartAmountWithDiscount} = useContext(StoreContext);
 
     const navigate = useNavigate();
-
-
-    const allItemsAreHot = Object.keys(cartItems).length > 0 && Object.keys(cartItems).every(itemId => {
-        const item = menuItems.find(menuItem => menuItem.id.toString() === itemId.toString());
-        return item && item.isHot;
-    });
-
-    const totalAmount = getTotalCartAmount();
-    const hotDiscount = allItemsAreHot ? totalAmount * 0.1 : 0;
-    const totalWithDiscount = totalAmount - hotDiscount; 
 
     return (
         <div className="cart">
@@ -58,14 +48,14 @@ const Cart = () => {
                     <div>
                         <div className="cart-total-details">
                             <p>Subtotal</p>
-                            <p>{totalAmount} kr</p>
+                            <p>{getTotalCartAmount()} kr</p>
                         </div>
-                        {allItemsAreHot && (
+                        {calculateAllItemsAreHot() && (
                             <div>
                                 <hr />
                                 <div className="cart-total-details">
                                     <p>🌶️ Discount</p>
-                                    <p>{parseFloat(hotDiscount).toFixed(2)} kr</p>
+                                    <p>-{parseFloat(getHotDiscount()).toFixed(2)} kr</p>
                                 </div>
                             </div>
                         )}
@@ -77,7 +67,7 @@ const Cart = () => {
                         <hr />
                         <div className="cart-total-details">
                             <b>Total</b>
-                            <b>{totalWithDiscount+99} kr</b>
+                            <b>{getTotalCartAmountWithDiscount()+99} kr</b>
                         </div>
                         <button onClick={() => navigate("/order")} className="place-order-btn">Proceed to checkout</button>
                     </div>

@@ -10,22 +10,26 @@ const StoreContextProvider = (props) => {
     const url = "http://localhost:5000";
 
     const addToCart = (itemId) => {
-
         if (!cartItems[itemId]) {
             setCartItems(prev => ({...prev, [itemId]: 1}));
         }
         else {
             setCartItems((prev) => ({...prev, [itemId]: prev[itemId] + 1}));
         }
-        
-
-    }
+    };
 
     const removeFromCart = (itemId) => {
         if (cartItems[itemId] > 0) {
             setCartItems((prev) => ({...prev, [itemId]: prev[itemId] - 1}));
         }
-    }
+    };
+
+    const calculateAllItemsAreHot = () => {
+        return Object.keys(cartItems).length > 0 && Object.keys(cartItems).every(itemId => {
+            const item = menuItems.find(menuItem => menuItem.id.toString() === itemId.toString());
+            return item && item.isHot;
+        });
+    };
 
     const getTotalCartAmount = () => {
         let totalAmount = 0;
@@ -40,6 +44,19 @@ const StoreContextProvider = (props) => {
             }
         }
         return totalAmount;
+    };
+
+    const getHotDiscount = () => {  
+        const totalAmount = getTotalCartAmount();
+        const allItemsAreHot = calculateAllItemsAreHot();
+        const hotDiscount = allItemsAreHot ? totalAmount * 0.1 : 0;
+        return hotDiscount;
+    };
+
+    const getTotalCartAmountWithDiscount = () => {
+        const totalAmount = getTotalCartAmount();
+        const hotDiscount = getHotDiscount();
+        return totalAmount - hotDiscount;
     };
 
     const fetchMenuItems = async () => {
@@ -64,11 +81,14 @@ const StoreContextProvider = (props) => {
         setCartItems,
         addToCart,
         removeFromCart,
-        getTotalCartAmount
+        getTotalCartAmount,
+        calculateAllItemsAreHot,
+        getTotalCartAmountWithDiscount,
+        getHotDiscount
     };
 
     return (
-        <StoreContext.Provider value={{contextValue, menuItems, cartItems, addToCart, removeFromCart, getTotalCartAmount}}>
+        <StoreContext.Provider value={{contextValue, menuItems, cartItems, addToCart, removeFromCart, calculateAllItemsAreHot, getTotalCartAmount, getTotalCartAmountWithDiscount, getHotDiscount}}>
             {props.children}
         </StoreContext.Provider>
     )
