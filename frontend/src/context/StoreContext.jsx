@@ -27,16 +27,20 @@ const StoreContextProvider = (props) => {
         }
     }
 
-/*     const getTotalCartAmount = () => {
+    const getTotalCartAmount = () => {
         let totalAmount = 0;
         for (const item in cartItems) {
             if (cartItems[item] > 0) {
-                let itemInfo = menuItems.find(menuItem => menuItem._id === item);
+                let itemInfo = menuItems.find(menuItem => menuItem.id.toString() === item.toString());
+                if (!itemInfo) {
+                    console.log(`No item found for ID: ${item}`);
+                    continue;
+                }
                 totalAmount += itemInfo.price * cartItems[item];
             }
         }
         return totalAmount;
-    }; */
+    };
 
     const fetchMenuItems = async () => {
         try {
@@ -59,11 +63,12 @@ const StoreContextProvider = (props) => {
         cartItems,
         setCartItems,
         addToCart,
-        removeFromCart
+        removeFromCart,
+        getTotalCartAmount
     };
 
     return (
-        <StoreContext.Provider value={{contextValue, menuItems, cartItems, addToCart, removeFromCart}}>
+        <StoreContext.Provider value={{contextValue, menuItems, cartItems, addToCart, removeFromCart, getTotalCartAmount}}>
             {props.children}
         </StoreContext.Provider>
     )

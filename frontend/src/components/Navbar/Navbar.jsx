@@ -2,13 +2,13 @@ import React, { useState, useContext } from "react"
 import "./Navbar.css"
 import { assets } from "../../assets/assets"
 import { Link } from "react-router-dom";
-// import { StoreContext } from "../../context/StoreContext";
+import { StoreContext } from "../../context/StoreContext";
 
 const Navbar = () => {
 
     const [menu, setMenu] = useState("menu");
 
-    // const {getTotalCartAmount} = useContext(StoreContext)
+    const {getTotalCartAmount} = useContext(StoreContext)
 
     return (
         <div className="navbar">
@@ -21,7 +21,7 @@ const Navbar = () => {
             <div className="navbar-right">
                 <div className="navbar-basket-icon">
                     <Link to="/cart"><img src={assets.basket_icon} alt="basket icon" className="basket-icon"/></Link>
-                    {/* <div className={getTotalCartAmount() === 0 ? "" : "dot"}></div> */}
+                    <div className={getTotalCartAmount() === 0 ? "" : "dot"}></div>
                 </div>
 
             </div>

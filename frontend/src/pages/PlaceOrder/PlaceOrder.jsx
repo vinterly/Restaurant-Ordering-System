@@ -5,16 +5,16 @@ import { StoreContext } from "../../context/StoreContext"
 
 const PlaceOrder = () => {
 
-    const {cartItems, menuItems} = useContext(StoreContext);
+    const {cartItems, menuItems, getTotalCartAmount} = useContext(StoreContext);
 
     const allItemsAreHot = Object.keys(cartItems).length > 0 && Object.keys(cartItems).every(itemId => {
         const item = menuItems.find(menuItem => menuItem._id === itemId);
         return item && item.hot;
     });
 
-/*     const totalAmount = getTotalCartAmount();
+     const totalAmount = getTotalCartAmount();
     const hotDiscount = allItemsAreHot ? totalAmount * 0.1 : 0;
-    const totalWithDiscount = totalAmount - hotDiscount; */
+    const totalWithDiscount = totalAmount - hotDiscount;
 
     return (
         <form className="place-order">
@@ -42,14 +42,14 @@ const PlaceOrder = () => {
                     <div>
                         <div className="cart-total-details">
                             <p>Subtotal</p>
-                            <p>{0} kr</p>
+                            <p>{totalAmount} kr</p>
                         </div>
                         {allItemsAreHot && (
                             <div>
                                 <hr />
                                 <div className="cart-total-details">
                                     <p>🌶️ Discount</p>
-                                    <p>{0} kr</p>
+                                    <p>{parseFloat(hotDiscount).toFixed(2)} kr</p>
                                 </div>
                             </div>
                         )}
@@ -61,7 +61,7 @@ const PlaceOrder = () => {
                         <hr />
                         <div className="cart-total-details">
                             <b>Total</b>
-                            <b>{0+99} kr</b>
+                            <b>{totalWithDiscount+99} kr</b>
                         </div>
                         <button className="place-order-btn">Place Order</button>
                     </div>
