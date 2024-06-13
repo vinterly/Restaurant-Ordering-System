@@ -10,7 +10,7 @@ const MenuItem = ({id, name, price, description, image, available, hot}) => {
         <div className="menu-item">
             <div className="menu-item-img-container">
                 <img src={"http://localhost:5173/src/assets/"+image} alt={name} className="menu-item-img"/>
-{/*                 {available && (
+                 {available && (
                     !cartItems[id] 
                     ? <button className="menu-item-btn-add" onClick={() => addToCart(id)}>Add</button>
                     :<div className="menu-item-quantity">
@@ -18,7 +18,7 @@ const MenuItem = ({id, name, price, description, image, available, hot}) => {
                         <p className="menu-item-quantity-count">{cartItems[id]}</p>
                         <button className="menu-item-quantity-btn-add" onClick={() => addToCart(id)}>+</button>
                     </div>
-                )} */}
+                )}
             </div>
             <div className="menu-item-info">
                 <div className="menu-item-name-hot">

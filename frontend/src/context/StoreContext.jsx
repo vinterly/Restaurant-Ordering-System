@@ -5,48 +5,53 @@ export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
 
-    const [cartItems, setCartItems] = useState([]);
     const [menuItems, setMenuItems] = useState([]);
+    const [cartItems, setCartItems] = useState({});
     const url = "http://localhost:5000";
 
     const addToCart = (itemId) => {
+
         if (!cartItems[itemId]) {
-            setCartItems(prev => ({...prev, [itemId]: 1}))
+            setCartItems(prev => ({...prev, [itemId]: 1}));
         }
         else {
-            setCartItems((prev) => ({...prev, [itemId]: prev[itemId] + 1}))
+            setCartItems((prev) => ({...prev, [itemId]: prev[itemId] + 1}));
         }
+        
+
     }
 
     const removeFromCart = (itemId) => {
-        setCartItems((prev) => ({...prev, [itemId]: prev[itemId] - 1}))
+        if (cartItems[itemId] > 0) {
+            setCartItems((prev) => ({...prev, [itemId]: prev[itemId] - 1}));
+        }
     }
 
-    const getTotalCartAmount = () => {
+/*     const getTotalCartAmount = () => {
         let totalAmount = 0;
         for (const item in cartItems) {
             if (cartItems[item] > 0) {
-                let itemInfo = menuItems.find(menuItem => menuItem._id === item)
-                totalAmount += itemInfo.price * cartItems[item]
+                let itemInfo = menuItems.find(menuItem => menuItem._id === item);
+                totalAmount += itemInfo.price * cartItems[item];
             }
         }
         return totalAmount;
-    };
+    }; */
 
     const fetchMenuItems = async () => {
         try {
-            const response = await axios.get(url+"/menu")
-            setMenuItems(response.data.menuItems)
+            const response = await axios.get(url+"/menu");
+            setMenuItems(response.data.menuItems);
         } catch (error) {
-            console.error("Error fetching menu items:", error)
+            console.error("Error fetching menu items:", error);
         }
     };
 
     useEffect(() => {
         const loadData = async () => {
-            await fetchMenuItems()
+            await fetchMenuItems();
         }
-        loadData()
+        loadData();
     }, []);
 
     const contextValue = {
@@ -54,12 +59,11 @@ const StoreContextProvider = (props) => {
         cartItems,
         setCartItems,
         addToCart,
-        removeFromCart,
-        getTotalCartAmount
+        removeFromCart
     };
 
     return (
-        <StoreContext.Provider value={{contextValue, menuItems, addToCart, removeFromCart, getTotalCartAmount}}>
+        <StoreContext.Provider value={{contextValue, menuItems, cartItems, addToCart, removeFromCart}}>
             {props.children}
         </StoreContext.Provider>
     )
