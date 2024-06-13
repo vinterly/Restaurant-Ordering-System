@@ -5,9 +5,9 @@ export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
 
-    const [cartItems, setCartItems] = useState([])
-    const url = "http://localhost:5000"
-    const [menu_items, setMenuItems] = useState([])
+    const [cartItems, setCartItems] = useState([]);
+    const [menuItems, setMenuItems] = useState([]);
+    const url = "http://localhost:5000";
 
     const addToCart = (itemId) => {
         if (!cartItems[itemId]) {
@@ -26,29 +26,40 @@ const StoreContextProvider = (props) => {
         let totalAmount = 0;
         for (const item in cartItems) {
             if (cartItems[item] > 0) {
-                let itemInfo = menu_items.find(menuItem => menuItem._id === item)
+                let itemInfo = menuItems.find(menuItem => menuItem._id === item)
                 totalAmount += itemInfo.price * cartItems[item]
             }
         }
         return totalAmount;
-    }
+    };
+
+    const fetchMenuItems = async () => {
+        try {
+            const response = await axios.get(url+"/menu")
+            setMenuItems(response.data.menuItems)
+        } catch (error) {
+            console.error("Error fetching menu items:", error)
+        }
+    };
 
     useEffect(() => {
-        axios.get(`/menu`)
-            .then(response => setMenuItems(response.data))
-            .catch(error => console.error('Error:', error));
+        const loadData = async () => {
+            await fetchMenuItems()
+        }
+        loadData()
     }, []);
 
     const contextValue = {
-        menu_items,
+        menuItems,
         cartItems,
         setCartItems,
         addToCart,
         removeFromCart,
         getTotalCartAmount
-    }
+    };
+
     return (
-        <StoreContext.Provider value={{contextValue, menu_items, addToCart, removeFromCart, getTotalCartAmount}}>
+        <StoreContext.Provider value={{contextValue, menuItems, addToCart, removeFromCart, getTotalCartAmount}}>
             {props.children}
         </StoreContext.Provider>
     )

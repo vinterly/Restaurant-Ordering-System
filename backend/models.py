@@ -10,6 +10,7 @@ class MenuItem(db.Model):
     price = db.Column(db.Float, nullable=False)
     available = db.Column(db.Boolean, default=True)
     is_hot = db.Column(db.Boolean, default=False)
+    image_filename = db.Column(db.String(255), nullable=True)
 
     def to_json(self):
         return {
@@ -18,7 +19,8 @@ class MenuItem(db.Model):
             "description": self.description,
             "price": self.price,
             "available": self.available,
-            "isHot": self.is_hot
+            "isHot": self.is_hot,
+            "imageFilename": self.image_filename
         }
 
 class Order(db.Model):
