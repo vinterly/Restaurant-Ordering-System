@@ -30,7 +30,7 @@ class Order(db.Model):
     items = db.Column(db.String, nullable=False)
     total = db.Column(db.Float, nullable=False)
     status = db.Column(db.String(50), nullable=False, default="pending")
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.now)
 
     def to_json(self):
         return {
