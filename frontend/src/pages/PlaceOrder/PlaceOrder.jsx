@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import "./PlaceOrder.css"
 import { StoreContext } from "../../context/StoreContext"
 import Input from "../../components/Input/Input";
@@ -8,12 +8,28 @@ import { city_validation, email_validation, first_name_validation, last_name_val
 
 const PlaceOrder = () => {
 
-    const {getHotDiscount, getTotalCartAmount, calculateAllItemsAreHot, getTotalCartAmountWithDiscount} = useContext(StoreContext);
+    const {getHotDiscount, getTotalCartAmount, calculateAllItemsAreHot, getTotalCartAmountWithDiscount, placeOrder, deliveryFee, cartItems} = useContext(StoreContext);
 
     const methods = useForm(); 
+    const[errorMessage, setErrorMessage] = useState('');
+
+    const cartItemIds = Object.keys(cartItems).join(",");
     
-    const onSubmit = methods.handleSubmit(data => {
-        console.log(data);
+    const onSubmit = methods.handleSubmit(() => {
+        const orderData = {
+            items: cartItemIds,
+            total: getTotalCartAmountWithDiscount()+99,
+        };
+
+        placeOrder(orderData)
+            .then(response => {
+                console.log(response.message);
+                setErrorMessage('');
+            })
+            .catch(error => {
+                console.error('Error placing order:', error);
+                setErrorMessage('Failed to place order. Please try again.');
+            });
     });
 
     return (
@@ -57,13 +73,14 @@ const PlaceOrder = () => {
                             <hr />
                             <div className="cart-total-details">
                                 <p>Delivery Fee</p>
-                                <p>{99} kr</p>
+                                <p>{deliveryFee} kr</p>
                             </div>
                             <hr />
                             <div className="cart-total-details">
                                 <b>Total</b>
-                                <b>{getTotalCartAmountWithDiscount()+99} kr</b>
+                                <b>{getTotalCartAmountWithDiscount()+deliveryFee} kr</b>
                             </div>
+                            {errorMessage && <div className="error-message">{errorMessage}</div>}
                             <button onClick={onSubmit} className="place-order-btn">Place Order</button>
                         </div>
                     </div>

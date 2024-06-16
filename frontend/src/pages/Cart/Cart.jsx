@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom"
 
 const Cart = () => {
 
-    const {cartItems, menuItems, removeFromCart, calculateAllItemsAreHot, getTotalCartAmount, getHotDiscount, getTotalCartAmountWithDiscount} = useContext(StoreContext);
+    const {cartItems, menuItems, removeFromCart, calculateAllItemsAreHot, getTotalCartAmount, getHotDiscount, getTotalCartAmountWithDiscount, deliveryFee} = useContext(StoreContext);
 
     const navigate = useNavigate();
 
@@ -62,12 +62,12 @@ const Cart = () => {
                         <hr />
                         <div className="cart-total-details">
                             <p>Delivery Fee</p>
-                            <p>{99} kr</p>
+                            <p>{deliveryFee} kr</p>
                         </div>
                         <hr />
                         <div className="cart-total-details">
                             <b>Total</b>
-                            <b>{getTotalCartAmountWithDiscount()+99} kr</b>
+                            <b>{getTotalCartAmountWithDiscount()+deliveryFee} kr</b>
                         </div>
                         <button onClick={() => navigate("/order")} className="place-order-btn">Proceed to checkout</button>
                     </div>

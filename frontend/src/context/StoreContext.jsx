@@ -8,6 +8,8 @@ const StoreContextProvider = (props) => {
     const [menuItems, setMenuItems] = useState([]);
     const [cartItems, setCartItems] = useState({});
     const url = "http://localhost:5000";
+    const discountPercentage = 0.1;
+    const deliveryFee = 99;
 
     const addToCart = (itemId) => {
         if (!cartItems[itemId]) {
@@ -49,7 +51,7 @@ const StoreContextProvider = (props) => {
     const getHotDiscount = () => {  
         const totalAmount = getTotalCartAmount();
         const allItemsAreHot = calculateAllItemsAreHot();
-        const hotDiscount = allItemsAreHot ? totalAmount * 0.1 : 0;
+        const hotDiscount = allItemsAreHot ? totalAmount * discountPercentage : 0;
         return hotDiscount;
     };
 
@@ -67,6 +69,16 @@ const StoreContextProvider = (props) => {
             console.error("Error fetching menu items:", error);
         }
     };
+    
+    const placeOrder = async (orderData) => {
+        try {
+            const response = await axios.post(url + "/order", orderData);
+            return response.data;
+        } catch (error) {
+            console.error("Error placing order:", error);
+            throw error;
+        }
+    };
 
     useEffect(() => {
         const loadData = async () => {
@@ -78,17 +90,19 @@ const StoreContextProvider = (props) => {
     const contextValue = {
         menuItems,
         cartItems,
+        deliveryFee,
         setCartItems,
         addToCart,
         removeFromCart,
         getTotalCartAmount,
         calculateAllItemsAreHot,
         getTotalCartAmountWithDiscount,
-        getHotDiscount
+        getHotDiscount,
+        placeOrder,
     };
 
     return (
-        <StoreContext.Provider value={{contextValue, menuItems, cartItems, addToCart, removeFromCart, calculateAllItemsAreHot, getTotalCartAmount, getTotalCartAmountWithDiscount, getHotDiscount}}>
+        <StoreContext.Provider value={contextValue}>
             {props.children}
         </StoreContext.Provider>
     )
