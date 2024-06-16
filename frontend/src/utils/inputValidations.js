@@ -98,10 +98,6 @@ export const state_validation = {
     type: "text",
     id: "state",
     validation: {
-        required: { 
-            value: true, 
-            message: "required" 
-        },
         maxLength: {
             value: 30,
             message: "max length is 30"
