@@ -7,7 +7,7 @@ const StoreContextProvider = (props) => {
 
     const [menuItems, setMenuItems] = useState([]);
     const [cartItems, setCartItems] = useState({});
-    const url = "http://localhost:5000";
+    const url = "http://localhost:8080";
     const discountPercentage = 0.1;
     const deliveryFee = 99;
 

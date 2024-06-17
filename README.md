@@ -39,19 +39,23 @@ A simple restaurant ordering system that allows customers to order food from a r
         pip install -r requirements.txt
     ```
 
-1. Install the required packages for frontend
+3. Install the required packages for frontend
     ```bash
         cd ../frontend
         npm install
     ```
     
-1. Run the backend server
+4. Initialise the database
     ```bash
         cd ../backend
+        python init_db.py
+    ```
+5. Run the backend server
+    ```bash
         python main.py
     ```
     
-2. Run the frontend server
+6. Run the frontend server
     ```bash
         cd ../frontend
         npm start dev
