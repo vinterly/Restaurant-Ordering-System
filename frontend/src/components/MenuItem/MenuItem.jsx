@@ -9,8 +9,8 @@ const MenuItem = ({id, name, price, description, image, available, hot}) => {
     return (
         <div className="menu-item">
             <div className="menu-item-img-container">
-                <img src={image} alt={name} className="menu-item-img"/>
-                {available && (
+                <img src={"http://localhost:5173/src/assets/"+image} alt={name} className="menu-item-img"/>
+                 {available && (
                     !cartItems[id] 
                     ? <button className="menu-item-btn-add" onClick={() => addToCart(id)}>Add</button>
                     :<div className="menu-item-quantity">
@@ -27,7 +27,7 @@ const MenuItem = ({id, name, price, description, image, available, hot}) => {
                 </div>
                 <div className="div menu-item-desc">{description}</div>
                 <div className="div menu-item-price-avail">
-                    <div className="div menu-item-price">{price} kr</div>
+                    <div className="div menu-item-price">{parseFloat(price).toFixed(2)} kr</div>
                     <div className="div menu-item-availability">{available ? null : "Not available"}</div>
                 </div>
             </div>

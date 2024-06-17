@@ -38,6 +38,7 @@
     background-color: #058C42;
     font-size: max(1.5vw,13px);
     border-radius: 50px;
+    cursor: pointer;
 }
 
 @media (max-width: 1050px) {
@@ -56,6 +57,6 @@
     }
 
     .header-contents button {
-        padding: 1vw 2.3vw;
+        display: none;
     }
 }

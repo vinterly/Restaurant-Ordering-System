@@ -1,0 +1,28 @@
+.input-component label {
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.input-label-error {
+    display: flex;
+    justify-content: space-between;
+}
+
+.input-component input {
+    margin: 10px 0 15px 0;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #c5c5c5;
+    border-radius: 4px;
+    outline-color: #058C42;
+}
+
+.input-error {  
+    color: white;
+    font-weight: 500;
+    font-size: 0.8rem;
+    margin-top: 5px;
+    background-color: tomato;
+    padding: 3px;
+    border-radius: 4px;
+}

@@ -5,50 +5,115 @@ export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
 
-    const [cartItems, setCartItems] = useState([])
-    const url = "http://localhost:5000"
-    const [menu_items, setMenuItems] = useState([])
+    const [menuItems, setMenuItems] = useState([]);
+    const [cartItems, setCartItems] = useState({});
+    const url = "http://localhost:5000";
+    const discountPercentage = 0.1;
+    const deliveryFee = 99;
 
     const addToCart = (itemId) => {
         if (!cartItems[itemId]) {
-            setCartItems(prev => ({...prev, [itemId]: 1}))
+            setCartItems(prev => ({...prev, [itemId]: 1}));
         }
         else {
-            setCartItems((prev) => ({...prev, [itemId]: prev[itemId] + 1}))
+            setCartItems((prev) => ({...prev, [itemId]: prev[itemId] + 1}));
         }
-    }
+    };
 
     const removeFromCart = (itemId) => {
-        setCartItems((prev) => ({...prev, [itemId]: prev[itemId] - 1}))
-    }
+        if (cartItems[itemId] > 0) {
+            setCartItems((prev) => ({...prev, [itemId]: prev[itemId] - 1}));
+        }
+    };
+
+    const calculateAllItemsAreHot = () => {
+        return Object.keys(cartItems).length > 0 && Object.keys(cartItems).every(itemId => {
+            const item = menuItems.find(menuItem => menuItem.id.toString() === itemId.toString());
+            return item && item.isHot;
+        });
+    };
 
     const getTotalCartAmount = () => {
         let totalAmount = 0;
         for (const item in cartItems) {
             if (cartItems[item] > 0) {
-                let itemInfo = menu_items.find(menuItem => menuItem._id === item)
-                totalAmount += itemInfo.price * cartItems[item]
+                let itemInfo = menuItems.find(menuItem => menuItem.id.toString() === item.toString());
+                if (!itemInfo) {
+                    console.log(`No item found for ID: ${item}`);
+                    continue;
+                }
+                totalAmount += itemInfo.price * cartItems[item];
             }
         }
         return totalAmount;
+    };
+
+    const getHotDiscount = () => {  
+        const totalAmount = getTotalCartAmount();
+        const allItemsAreHot = calculateAllItemsAreHot();
+        const hotDiscount = allItemsAreHot ? totalAmount * discountPercentage : 0;
+        return hotDiscount;
+    };
+
+    const getTotalCartAmountWithDiscount = () => {
+        const totalAmount = getTotalCartAmount();
+        const hotDiscount = getHotDiscount();
+        return totalAmount - hotDiscount;
+    };
+
+    const fetchMenuItems = async () => {
+        try {
+            const response = await axios.get(url+"/menu");
+            setMenuItems(response.data.menuItems);
+        } catch (error) {
+            console.error("Error fetching menu items:", error);
+        }
+    };
+    
+    const placeOrder = async (orderData) => {
+        try {
+            const response = await axios.post(url + "/order", orderData);
+            return response.data;
+        } catch (error) {
+            console.error("Error placing order:", error);
+            throw error;
+        }
+    };
+
+    const fetchOrderDetails = async (orderId) => {
+        try {
+            const response = await axios.get(url + "/order/" + orderId);
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching order details:", error);
+            throw error;
+        }
     }
 
     useEffect(() => {
-        axios.get(`/menu`)
-            .then(response => setMenuItems(response.data))
-            .catch(error => console.error('Error:', error));
+        const loadData = async () => {
+            await fetchMenuItems();
+        }
+        loadData();
     }, []);
 
     const contextValue = {
-        menu_items,
+        menuItems,
         cartItems,
+        deliveryFee,
         setCartItems,
         addToCart,
         removeFromCart,
-        getTotalCartAmount
-    }
+        getTotalCartAmount,
+        calculateAllItemsAreHot,
+        getTotalCartAmountWithDiscount,
+        getHotDiscount,
+        placeOrder,
+        fetchOrderDetails,
+    };
+
     return (
-        <StoreContext.Provider value={{contextValue, menu_items, addToCart, removeFromCart, getTotalCartAmount}}>
+        <StoreContext.Provider value={contextValue}>
             {props.children}
         </StoreContext.Provider>
     )

@@ -3,13 +3,14 @@ from models import MenuItem, Order
 
 # Sample menu items
 menu_items = [
-    MenuItem(name="Spicy Tomato Soup", description="Creamy tomato soup with chilis.", price=139.00, available=True, is_hot=True),
-    MenuItem(name="Chicken Caesar Salad", description="Chicken and fresh romaine lettuce with Caesar dressing.", price=129.00, available=True, is_hot=False),
-    MenuItem(name="Hot Mess Pizza", description="Pizza with spicy chicken, jalapeño and pineapple.", price=199.00, available=True, is_hot=True),
-    MenuItem(name="Veggie Pizza", description="Vegan-friendly pizza with vegetables.", price=239.00, available=True, is_hot=False),
-    MenuItem(name="Pasta Carbonara", description="Creamy pasta with pancetta and parmesan.", price=169.00, available=False, is_hot=False),
-    MenuItem(name="Pizza dressing", description="Delicious pizza dressing with garlic.", price=39.50,available=True, is_hot=False)
+    MenuItem(name="Spicy Tomato Soup", description="A rich, creamy tomato soup with a Nordic twist of spicy chili heat.", price=139.00, available=True, is_hot=True, image_filename="tomato_soup.jpg"),
+    MenuItem(name="Nordic Chicken Caesar Salad", description="Tender chicken and fresh romaine lettuce, topped with our signature Caesar dressing.", price=129.00, available=True, is_hot=False, image_filename="chicken_caesar_salad.jpg"),
+    MenuItem(name="Hot Nordic Pizza", description="A fiery pizza with spicy chicken, jalapeño, and a touch of sweet pineapple.", price=199.00, available=True, is_hot=True, image_filename="pineapple_pizza.jpg"),
+    MenuItem(name="Nordic Veggie Pizza", description="A vegan-friendly pizza loaded with fresh, locally sourced vegetables.", price=239.00, available=True, is_hot=False, image_filename="vegan_pizza.jpg"),
+    MenuItem(name="Nordic Pasta Carbonara", description="A creamy pasta dish featuring pancetta and parmesan, inspired by Nordic flavors.", price=169.00, available=False, is_hot=False, image_filename="pasta_carbonara.jpg"),
+    MenuItem(name="Pizza Dressing", description="A delicious garlic dressing to complement our Nordic-style pizzas.", price=39.50, available=True, is_hot=False, image_filename="sauces.jpg")
 ]
+
 
 # Sample orders
 orders = [
