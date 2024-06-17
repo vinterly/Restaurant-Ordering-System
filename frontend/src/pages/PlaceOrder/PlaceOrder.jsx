@@ -3,6 +3,7 @@ import "./PlaceOrder.css"
 import { StoreContext } from "../../context/StoreContext"
 import Input from "../../components/Input/Input";
 import { useForm, FormProvider } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { city_validation, email_validation, first_name_validation, last_name_validation, street_validation, state_validation, zip_code_validation, country_validation, phone_validation } from "../../utils/inputValidations";
 
 
@@ -11,8 +12,9 @@ const PlaceOrder = () => {
     const {getHotDiscount, getTotalCartAmount, calculateAllItemsAreHot, getTotalCartAmountWithDiscount, placeOrder, deliveryFee, cartItems} = useContext(StoreContext);
 
     const methods = useForm(); 
-    const[errorMessage, setErrorMessage] = useState('');
+    const[errorMessage, setErrorMessage] = useState("");
 
+    const navigate = useNavigate();
     const cartItemIds = Object.keys(cartItems).join(",");
     
     const onSubmit = methods.handleSubmit(() => {
@@ -24,11 +26,13 @@ const PlaceOrder = () => {
         placeOrder(orderData)
             .then(response => {
                 console.log(response.message);
-                setErrorMessage('');
+                setErrorMessage("");
+                const orderId = response.orderId;
+                navigate("/order-confirmation", { state: { orderId } });
             })
             .catch(error => {
-                console.error('Error placing order:', error);
-                setErrorMessage('Failed to place order. Please try again.');
+                console.error("Error placing order:", error);
+                setErrorMessage("Failed to place order. Please try again.");
             });
     });
 

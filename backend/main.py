@@ -23,10 +23,11 @@ def create_order():
     try:
         db.session.add(new_order)
         db.session.commit()
+        order_id = new_order.id
     except Exception as e:
         return jsonify({"message": str(e)}), 400
 
-    return jsonify({"message": "Order successfully placed."}), 201
+    return jsonify({"message": "Order successfully placed.", "orderId": order_id}), 201
 
 @app.route("/order/<int:id>", methods=["GET"])
 def get_order(id):

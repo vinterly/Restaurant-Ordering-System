@@ -80,6 +80,16 @@ const StoreContextProvider = (props) => {
         }
     };
 
+    const fetchOrderDetails = async (orderId) => {
+        try {
+            const response = await axios.get(url + "/order/" + orderId);
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching order details:", error);
+            throw error;
+        }
+    }
+
     useEffect(() => {
         const loadData = async () => {
             await fetchMenuItems();
@@ -99,6 +109,7 @@ const StoreContextProvider = (props) => {
         getTotalCartAmountWithDiscount,
         getHotDiscount,
         placeOrder,
+        fetchOrderDetails,
     };
 
     return (
