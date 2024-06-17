@@ -1,30 +1,49 @@
 # Restaurant-Ordering-System
+
+A simple restaurant ordering system that allows customers to order food from a restaurant. The system allows customers to view the menu, add items to the cart, and place an order. 
+
+## Features
  
-# Prerequisites
+- Frontend with React
+- Backend with Flask and SQLAlchemy
+- Users can view the menu, add items to the cart, and place an order
+- Responsive design
+
+## (Potential) Future Features
+
+- User authentication
+- Admin panel to manage the menu and orders
+- Migrate database to a more scalable solution like PostgreSQL
+- Expand the database schema to include CartItem and OrderItem tables
+- Order details correctly displays items with quantity
+
+# Setup
+
+## Prerequisites
 
 - Python
 - Node.js
 - Git
 
-# Setup to run locally
+## Steps to run locally
 
-- Clone the repository
-- Install the required packages for backend
+1. Clone the repository
+2. Install the required packages for backend
   ```bash
     cd backend
     pip install -r requirements.txt
     ```
-- Install the required packages for frontend
+3. Install the required packages for frontend
   ```bash
     cd ../frontend
     npm install
     ```
-- Run the backend server
+4. Run the backend server
     ```bash
         cd ../backend
         python main.py
     ```
-- Run the frontend server
+5. Run the frontend server
     ```bash
         cd ../frontend
         npm start dev
